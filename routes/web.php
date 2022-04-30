@@ -68,10 +68,16 @@ Route::get('telecharge',[
         'uses'=>'gererFraisController@telecharge'
 ]);
 
-         /*-------------------- Use case état des frais---------------------------*/
+         /*-------------------- Use case ajout visiteur---------------------------*/
 
 Route::get('ajout',[
         'as'=>'chemin_ajout',
         'uses'=>'ajoutVisiteur@AfficheFormulaireAjout'
 ]);
 
+
+
+Route::get('ajout',[
+        'as'=>'chemin_enregistrementVisiteur',
+        'uses'=>'ajoutVisiteur@enregistrementVisiteur'
+]);
