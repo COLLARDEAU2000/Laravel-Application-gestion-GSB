@@ -535,7 +535,7 @@ public function verificationSuppresionVisiteur($id)
 
 }
 
-	/**
+/**
  * Retourne le  nom le prenom d'un visiteur
  
  * @param aucun
@@ -550,6 +550,39 @@ public function getinfoArchive($id)
 }
 
 
+
+/**
+ * Retourne Aucune valeur
+ 
+ * @param id,prenom,nom,login,mdp,adresse,cp,ville,date_embauche,role
+
+ * 
+ * @return  aucun
+*/
+public function InsertNewVisiteur($id,$prenom,$nom,$login,$mdp,$adresse,$cp,$ville,$date_embauche,$role)
+{
+    $req = "INSERT INTO `visiteur`(`id`, `nom`, `prenom`, `login`, `mdp`, `adresse`, `cp`, `ville`, `dateEmbauche`, `role`) 
+	VALUES('$id','$nom','$prenom','$login','$mdp','$adresse','$cp','$ville','$date_embauche','$role')";  
+	$this->monPdo->exec($req);
+
+
+}
+
+/**
+ * Retourne la valeur 1 si oui et null si non
+ 
+ * @param idVisiteur
+
+ * 
+ * @return  nb
+*/
+public function getChiffreNonNullVerificateurAjout($idVisiteur)
+{
+	$req = "SELECT COUNT(id) as nb FROM `visiteur` WHERE id='$idVisiteur'";
+	$res = $this->monPdo->query($req);
+	$lesLigne = $res->fetch();
+	return $lesLigne;
+}
 
 
 

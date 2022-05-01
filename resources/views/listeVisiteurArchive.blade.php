@@ -4,6 +4,7 @@
         <h2><center>archives visiteurs</center></h2>
         <h3>visiteur archive à sélectionner : </h3>
       <form action="{{ route('chemin_infoarchive') }}" method="get">
+        @csrf
         {{ csrf_field() }} <!-- laravel va ajouter un champ caché avec un token -->
         @includeWhen($errors != null , 'msgerreurs', ['erreurs' => $errors]) 
         <div class="corpsForm"><p>

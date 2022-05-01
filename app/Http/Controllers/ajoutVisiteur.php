@@ -52,31 +52,49 @@ class ajoutVisiteur extends Controller
             if($roleVisiteur==1)
             {
                 //recuperation des informations du visiteurs a ajouter
-                $id=$request['idVisiteurAjout'];
-                $prenom=$request['prenomVisiteurAjout'];
-                $nom=$request['nomVisiteurAjout'];
-                $login=$request['login'];
-                $mdp=$request['mdp'];
-                $adresse=$request['adressePostalVisiteurAjout'];
-                $cp=$request['codePostalVisiteurAjout'];
-                $ville=$request['villeVisiteurAjout'];
+                $id=htmlspecialchars($request['idVisiteurAjout']);
+                $prenomVisiteur=htmlspecialchars($request['prenomVisiteurAjout']);
+                $nomVisiteur=htmlspecialchars($request['nomVisiteurAjout']);
+                $login= ajoutVisiteur::genereLogin();
+                $mdp=ajoutVisiteur::genereMotDePasse();
+                $adresse=htmlspecialchars($request['adressePostalVisiteurAjout']);
+                $cp= htmlspecialchars($request['codePostalVisiteurAjout']);
+                $ville= htmlspecialchars( $request['villeVisiteurAjout']);
                 $date_embauche=$request['dateEmbaucheVisiteurAjout'];
                 $role=$request['roleVisiteurAjout'];
-
+                //dd($login);
                 //Ajout visiteur
-                $verificationEtatFiche = PdoGsb::getInfoFicheFraisVisiteurLibelle($indentifiantVisiteurASupprimer );
-
+                $ajout = PdoGsb::InsertNewVisiteur($id,$prenomVisiteur,$nomVisiteur,$login,$mdp,$adresse,$cp,$ville,$date_embauche,$role);
+                
 
                 // verification que le visiteur a ete ajouter
-                $verificationEtatFiche = PdoGsb::getInfoFicheFraisVisiteurLibelle($indentifiantVisiteurASupprimer );
-
-                return view('ajoutFormulaire')
-                ->with('roleVisiteur',$roleVisiteur)
-                ->with('nom',$nom)
-                ->with('prenom',$prenom)
-                ->with('visiteur',$visiteur); 
-            }
-               
+                $verificationAjoutVisiteur = PdoGsb::getChiffreNonNullVerificateurAjout($id);
+                
+                if($verificationAjoutVisiteur['nb']==1)
+                {
+                    $message = "Ajout effectuée avec succès !";
+                    return view('valider')
+                    ->with('nom',$nom)
+                    ->with('prenom',$prenom)
+                    ->with('message',$message)
+                    ->with('roleVisiteur',$roleVisiteur)
+                    ->with('visiteur',$visiteur); 
+                }
+                else
+                {
+                    
+                    $erreurs[] = "Erreur lors de l'ajout du visiteur'.Veuillez recommencer
+                    NB: Si le problème persiste signalez le à votre développeur web .
+                    Merci!!!
+                    ";
+                    return view('erreur')
+                    ->with('nom',$nom)
+                    ->with('prenom',$prenom)
+                    ->with('erreurs',$erreurs)                        
+                    ->with('roleVisiteur',$roleVisiteur)
+                    ->with('visiteur',$visiteur);                
+                }
+            } 
         }
         else
         {
@@ -85,8 +103,30 @@ class ajoutVisiteur extends Controller
     }
 
 
-
-
+    function genereMotDePasse($longueur=12)
+    {
+    // par défaut, on affiche un mot de passe de 5 caractères
+    // chaine de caractères qui sera mis dans le désordre:
+    $Chaine = "abcdefghijklmnopqrstuvwxyz01234567890!@@#$%%^&**CDEFGHIJKLMNOPQRSTUVWXYZ"; // 62 caractères au total
+    // on mélange la chaine avec la fonction str_shuffle(), propre à PHP
+    $Chaine = str_shuffle($Chaine);
+    // ensuite on coupe à la longueur voulue avec la fonction substr(), propre à PHP aussi
+    $Chaine = substr($Chaine,0,$longueur);
+    // ensuite on retourne notre chaine aléatoire de "longueur" caractères:
+    return $Chaine;
+    }
+    function genereLogin($longueur=2)
+    {
+    // par défaut, on affiche un mot de passe de 5 caractères
+    // chaine de caractères qui sera mis dans le désordre:
+    $Chaine = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // 62 caractères au total
+    // on mélange la chaine avec la fonction str_shuffle(), propre à PHP
+    $Chaine = str_shuffle($Chaine);
+    // ensuite on coupe à la longueur voulue avec la fonction substr(), propre à PHP aussi
+    $Chaine = substr($Chaine,0,$longueur);
+    // ensuite on retourne notre chaine aléatoire de "longueur" caractères:
+    return $Chaine;
+    }
 
     
 

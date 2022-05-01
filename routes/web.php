@@ -77,7 +77,7 @@ Route::get('ajout',[
 
 
 
-Route::get('ajout',[
+Route::post('enregistrement',[
         'as'=>'chemin_enregistrementVisiteur',
         'uses'=>'ajoutVisiteur@enregistrementVisiteur'
 ]);

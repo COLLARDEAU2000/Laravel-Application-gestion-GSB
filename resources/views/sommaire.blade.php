@@ -14,7 +14,7 @@
                      <a href="{{ route('chemin_gestionFrais')}}" title="Acceuil ">Acceuil</a>
                   </li>
                   <li class="smenu">
-                    <a href="{{ route('chemin_ajout') }}" title="AfficheVisiteur">Ajouter visiteurs</a>
+                    <a href="{{ route('chemin_ajout')}}" title="AfficheVisiteur">Ajouter visiteurs</a>
                   </li>
                   <li class="smenu">
                     <a href="{{ route('chemin_selectionMois') }}" title="AfficheVisiteur">Modifier visiteurs</a>
